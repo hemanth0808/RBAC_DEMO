@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 const authMiddleware = require("./middleware/auth");
 const roleMiddleware = require("./middleware/roles");
 const sql = require("mssql");
@@ -53,10 +53,10 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const config = {
-  server: "DESKTOP-55H7L9D",
-  database: "RBAC",
-  user: "sqluser", 
-  password: "sqluser",
+  server:process.env.SERVER?? "DESKTOP-55H7L9D",
+  database: process.env.DB??"RBAC",
+  user: process.env.USER??"sqluser", 
+  password: process.env.PASSWORD??"sqluser",
   options: {
     encrypt: false,
     trustServerCertificate: true,
@@ -349,5 +349,5 @@ app.get("/usersList",authMiddleware,roleMiddleware(["Admin"]), async (req, res) 
   }
 );
 
-const PORT = 5000;
+const PORT = process.env.PORT ?? 5000;
 app.listen(PORT,"0.0.0.0", () => console.log(`Server running on port ${PORT}`));
